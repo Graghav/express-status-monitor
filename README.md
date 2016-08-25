@@ -1,6 +1,6 @@
 ### Issues with HTTPS (including Heroku) has been resolved, module is working again
-# express-status-monitor
-Simple, self-hosted module based on Socket.io and Chart.js to report realtime server metrics for Express-based node servers. 
+# restify-status-monitor
+Simple, self-hosted module based on Socket.io and Chart.js to report realtime server metrics for Restify-based node servers. 
 
 [Koa.js version of this library](https://github.com/capaj/koa-monitor).
 
