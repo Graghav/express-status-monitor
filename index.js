@@ -94,10 +94,7 @@ const middlewareWrapper = (config) => {
 
   let renderedHtml;
   fs.readFile(path.join(__dirname, '/index.html'), function (err, html) {
-    renderedHtml = html.toString()
-      .replace(/{{title}}/g, config.title)
-      .replace(/{{script}}/g, fs.readFileSync(path.join(__dirname, '/app.js')))
-      .replace(/{{style}}/g, fs.readFileSync(path.join(__dirname, '/style.css')));
+    renderedHtml = html.toString().replace(/{{title}}/g, config.title);
   });
 
   return (req, res, next) => {
@@ -120,13 +117,16 @@ const middlewareWrapper = (config) => {
     }
 
     const startTime = process.hrtime();
-    if (req.path === config.path) {
+    if (req.url === config.path) {
       if (config.auth) {
         var user = basicAuth(req);
         if (!user || !user.name || !user.pass) return unauthorized(res);
         if (user.name !== config.auth.username || user.pass !== config.auth.password) return unauthorized(res);
       }
-      res.send(renderedHtml);
+      res.setHeader('Content-Type', 'text/html');
+      res.writeHead(200);
+      res.write(renderedHtml);
+      res.end();
     } else {
       onHeaders(res, () => {
         const diff = process.hrtime(startTime);
